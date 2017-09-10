@@ -16,10 +16,10 @@ import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 
 
 @Component({
-  selector: 'page-schedule',
-  templateUrl: 'schedule.html'
+  selector: 'page-mis-viajes',
+  templateUrl: 'mis-viajes.html'
 })
-export class SchedulePage {
+export class MisViajesPage {
   // the list is a child of the schedule page
   // @ViewChild('scheduleList') gets a reference to the list
   // with the variable #scheduleList, `read: List` tells it to return
@@ -44,11 +44,11 @@ export class SchedulePage {
     public confData: ConferenceData,
     public user: UserData,
   ) {
-      alert("TEST");
+      alert("MIS VIAJES");
   }
 
   ionViewDidLoad() {
-    this.app.setTitle('Schedule');
+    this.app.setTitle('Mis Viajes');
     this.updateSchedule();
   }
 

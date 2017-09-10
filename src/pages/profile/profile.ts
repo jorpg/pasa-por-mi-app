@@ -4,14 +4,14 @@ import { PopoverController } from 'ionic-angular';
 import { PopoverPage } from '../about-popover/about-popover';
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+  selector: 'page-profile',
+  templateUrl: 'profile.html'
 })
-export class AboutPage {
+export class ProfilePage {
   conferenceDate = '2047-05-17';
 
   constructor(public popoverCtrl: PopoverController) {
-    alert("ABOUT");
+    alert("PROFILE");
   }
 
   presentPopover(event: Event) {
