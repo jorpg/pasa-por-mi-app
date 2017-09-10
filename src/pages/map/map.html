@@ -3,10 +3,26 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Map</ion-title>
+    <ion-title>Crear Ruta</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="map-page">
-  <div style="height: 100%; width: 100%" #mapCanvas id="map_canvas"></div>
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>Origen:</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Destino:</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Marca</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+
+
+  </ion-list>
 </ion-content>
