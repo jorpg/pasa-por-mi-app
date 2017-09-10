@@ -30,7 +30,7 @@ import {SupportPage} from '../pages/support/support';
 import {ConferenceData} from '../providers/conference-data';
 import {UserData} from '../providers/user-data';
 import {ProfilePage} from "../pages/profile/profile";
-import {CreatedTripsPage} from "../pages/created-trips/mis-viajes";
+import {CreatedTripsPage} from "../pages/created-trips/created-trips";
 import {LoginService} from "../providers/login.service";
 import {TripService} from "../providers/trip.service";
 import {VehiclesService} from "../providers/car.service";
