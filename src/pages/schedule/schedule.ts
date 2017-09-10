@@ -13,6 +13,7 @@ import { UserData } from '../../providers/user-data';
 
 import { SessionDetailPage } from '../session-detail/session-detail';
 import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
+import {Storage} from "@ionic/storage";
 
 
 @Component({
@@ -43,13 +44,19 @@ export class SchedulePage {
     public toastCtrl: ToastController,
     public confData: ConferenceData,
     public user: UserData,
+    public storage: Storage
   ) {
-      // alert("TEST");
+      this.storage.set("token", "ed22b859c305a5577c532fd73fa5578fff084dc9");
   }
 
   ionViewDidLoad() {
-    this.app.setTitle('Schedule');
-    this.updateSchedule();
+    this.app.setTitle('Viajes');
+    this.loadTrips();
+    // this.updateSchedule();
+  }
+
+  private loadTrips(){
+
   }
 
   updateSchedule() {

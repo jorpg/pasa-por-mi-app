@@ -32,6 +32,7 @@ import {UserData} from '../providers/user-data';
 import {ProfilePage} from "../pages/profile/profile";
 import {MisViajesPage} from "../pages/mis-viajes/mis-viajes";
 import {LoginService} from "../providers/login.service";
+import {TripService} from "../providers/trip.service";
 
 
 @NgModule({
@@ -102,6 +103,7 @@ import {LoginService} from "../providers/login.service";
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         ConferenceData,
         LoginService,
+        TripService,
         UserData,
         InAppBrowser,
         SplashScreen,

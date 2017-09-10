@@ -30,6 +30,7 @@ export class ProfilePage {
                 const loading = this.loadingCtrl.create({
                     content: 'Iniciando Sesión...'
                 });
+                loading.present();
 
                 this.loginService.loginWithFacebook(res.authResponse.accessToken).subscribe((res) => {
                     console.log(`${this.TAG}:loginWithFacebook:login:loginService:`, JSON.stringify(res));

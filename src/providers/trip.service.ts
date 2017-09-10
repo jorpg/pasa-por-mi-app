@@ -10,21 +10,21 @@ import {Config} from "../app/config";
 
 
 @Injectable()
-export class LoginService extends BaseService {
+export class TripService extends BaseService {
     data: any;
 
     constructor(public http: Http, private storage: Storage) {
         super();
     }
 
-    loginWithFacebook(accessToken: string) {
-        // const token = this.storage.get("token")
+    list() {
+        const token = this.storage.get("token")
         const headers = new Headers();
-        const data = {"access_token": accessToken};
         headers.append("Content-Type", "application/json");
+        headers.append('Authorization', `Token ${token}`);
 
         return this.http
-            .post(`${Config.API_URL}mobile/accounts/signup-facebook/`, data, {headers})
+            .get(`${Config.API_URL}mobile/accounts/signup-facebook/`, {headers})
             .catch((e) => this.handleErrors(e))
             .map(res => this.extractData(res));
     }
