@@ -4,6 +4,7 @@ import {AlertController, LoadingController} from "ionic-angular";
 import {Storage} from "@ionic/storage";
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
+import {Config} from "../../app/config";
 
 
 @Component({
@@ -45,6 +46,7 @@ export class ProfilePage {
                         buttons: ['OK']
                     }).present();
                     this.storage.set("token", res.token);
+                    Config.token = res.token;
                 }, (error) => {
                     console.error(`${this.TAG}:loginWithFacebook:login:loginService:`, JSON.stringify(error));
                     loading.dismiss();

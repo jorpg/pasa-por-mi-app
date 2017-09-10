@@ -1,7 +1,9 @@
 import {Component} from '@angular/core';
 import {VehiclesService} from "../../providers/car.service";
-import {AlertController} from "ionic-angular";
+import {AlertController, LoadingController} from "ionic-angular";
 import {Storage} from "@ionic/storage";
+import {Config} from "../../app/config";
+import {TripService} from "../../providers/trip.service";
 
 // import { LoginService } from '../../providers/conference-data';
 //
@@ -19,13 +21,26 @@ export class MapPage {
     private readonly TAG = MapPage.name;
 
     title = "Nueva Solicitud de Viaje";
+    seatsText = "requeridos";
+    tripTypeText = "Puestos";
     mainToggle = true;
     vehicles = [];
+    selectedVehicle: number;
+    departureAddress: any;
+    arrivalAddress: any;
+    tripDate: String = new Date().toISOString();
+    seats: any;
+    price: any;
+    tripType: any;
+
 
     public constructor(private vehiclesService: VehiclesService,
                        private alertCtrl: AlertController,
-                       public storage: Storage) {
+                       public storage: Storage,
+                       public tripService: TripService,
+                       public loadingCtrl: LoadingController) {
         this.storage.set("token", "ed22b859c305a5577c532fd73fa5578fff084dc9");
+        Config.token = "ed22b859c305a5577c532fd73fa5578fff084dc9";
     }
 
     ngOnInit() {
@@ -45,10 +60,76 @@ export class MapPage {
         console.log(`${this.TAG}:mainToggleChanged:`, this.mainToggle);
         if (this.mainToggle) {
             this.title = "Nueva Oferta de Viaje";
+            this.seatsText = "disponibles";
         } else {
             this.title = "Nueva Solicitud de Viaje";
+            this.seatsText = "requeridos";
         }
         this.mainToggle = !this.mainToggle
+    }
+
+    create() {
+        const loading = this.loadingCtrl.create({
+            content: 'Creando...'
+        });
+        loading.present();
+
+        const data = {
+            "departure_address": {
+                "latitude": "0",
+                "longitude": "0",
+                "text": `${this.departureAddress}`
+            },
+            "departure_date": `${this.tripDate}`,
+            "arrival_address": {
+                "latitude": "0",
+                "longitude": "0",
+                "text": `${this.arrivalAddress}`
+            },
+            "vehicle_id": `${this.selectedVehicle}`,
+            "seats": `${this.seats}`,
+            "condition": `${this.tripType}`,
+            "price": `${this.price}`
+        };
+
+        if (this.mainToggle) { // Solicitud
+            this.tripService.create(data).subscribe(res => {
+                console.log(`${this.TAG}:create:`, JSON.stringify(res));
+                loading.dismiss();
+                this.alertCtrl.create({
+                    title: this.mainToggle ? "Solicitud creada" : "Oferta creada",
+                    buttons: ['OK']
+                }).present();
+
+            }, error => {
+                console.error(`${this.TAG}:create:`, JSON.stringify(error));
+                loading.dismiss();
+                this.alertCtrl.create({
+                    title: 'Error al intentar crear',
+                    subTitle: String(error),
+                    buttons: ['OK']
+                }).present();
+            });
+        } else { //Oferta
+            this.tripService.createOffer(data).subscribe(res => {
+                console.log(`${this.TAG}:create:`, JSON.stringify(res));
+                loading.dismiss();
+                this.alertCtrl.create({
+                    title: this.mainToggle ? "Solicitud creada" : "Oferta creada",
+                    buttons: ['OK']
+                }).present();
+
+            }, error => {
+                console.error(`${this.TAG}:create:`, JSON.stringify(error));
+                loading.dismiss();
+                this.alertCtrl.create({
+                    title: 'Error al intentar crear',
+                    subTitle: String(error),
+                    buttons: ['OK']
+                }).present();
+            });
+        }
+
     }
 
     // @ViewChild('mapCanvas') mapElement: ElementRef;

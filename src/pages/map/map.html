@@ -10,46 +10,46 @@
 </ion-header>
 
 <ion-content class="map-page">
-    <!--<ion-label text-center text-uppercase color="primary" class="title-rutas">-->
-    <!--Información de la Ruta-->
-    <!--</ion-label>-->
     <ion-list>
         <ion-item [hidden]="mainToggle">
             <ion-label>Vehiculo</ion-label>
             <ion-select [(ngModel)]="selectedVehicle">
-                <ion-option *ngFor="let vehicle of vehicles" value="vehicle.id">{{vehicle.brand}} {{vehicle.model}}
+                <ion-option *ngFor="let vehicle of vehicles" value="{{vehicle.id}}">{{vehicle.brand}} {{vehicle.model}}
                     ({{vehicle.license_plate}})
                 </ion-option>
-                <!--<ion-option value="f">Mitsubishi Eclipse</ion-option>-->
-                <!--<ion-option value="m">Chevrolet Aveo 2011</ion-option>-->
-                <!--<ion-option value="m">Toyota Corolla 2017</ion-option>-->
             </ion-select>
         </ion-item>
         <ion-item>
             <ion-label>Origen:</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]="departureAddress"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Destino:</ion-label>
-            <ion-input type="text"></ion-input>
+            <ion-input type="text" [(ngModel)]="arrivalAddress"></ion-input>
         </ion-item>
         <ion-item>
-            <ion-label>Fecha y hora</ion-label>
-            <ion-datetime displayFormat="MMM DD, YYYY hh:mm A" [(ngModel)]="myDate"></ion-datetime>
+            <ion-label>Fecha y hora:</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY hh A" [(ngModel)]="tripDate"></ion-datetime>
         </ion-item>
         <ion-item>
-            <ion-label>Puestos Disponibles</ion-label>
-            <ion-input type="number"></ion-input>
+            <ion-label>Tipo de Transporte:</ion-label>
+            <ion-select [(ngModel)]="tripType">
+                <ion-option value="FC">Vehiculo completo</ion-option>
+                <ion-option value="PS">Por puestos</ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-item>
+            <ion-label>Puestos {{seatsText}}</ion-label>
+            <ion-input type="number" [(ngModel)]="seats"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label>Precio</ion-label>
-            <ion-input type="number"></ion-input>
+            <ion-input type="number" [(ngModel)]="price"></ion-input>
         </ion-item>
     </ion-list>
-
 </ion-content>
 <ion-footer>
     <ion-toolbar text-center>
-        <button ion-button color="light" clear>Crear Ruta</button>
+        <button (click)="create()" ion-button color="light" clear>CREAR</button>
     </ion-toolbar>
 </ion-footer>
