@@ -1,9 +1,5 @@
 <ion-header>
     <ion-navbar (click)="mainToggleChanged()">
-        <button ion-button menuToggle>
-            <iongle>
-    e="menu"></ion-icon>
-        </button>
         <ion-title>{{title}}</ion-title>
         <ion-buttons end>
             <button ion-button icon-only>
@@ -15,13 +11,15 @@
 
 <ion-content class="map-page">
     <!--<ion-label text-center text-uppercase color="primary" class="title-rutas">-->
-        <!--Información de la Ruta-->
+    <!--Información de la Ruta-->
     <!--</ion-label>-->
     <ion-list>
         <ion-item [hidden]="mainToggle">
             <ion-label>Vehiculo</ion-label>
             <ion-select [(ngModel)]="selectedVehicle">
-                <ion-option *ngFor="let vehicle of vehicles" value="vehicle.id">{{vehicle.name}}</ion-option>
+                <ion-option *ngFor="let vehicle of vehicles" value="vehicle.id">{{vehicle.brand}} {{vehicle.model}}
+                    ({{vehicle.license_plate}})
+                </ion-option>
                 <!--<ion-option value="f">Mitsubishi Eclipse</ion-option>-->
                 <!--<ion-option value="m">Chevrolet Aveo 2011</ion-option>-->
                 <!--<ion-option value="m">Toyota Corolla 2017</ion-option>-->
