@@ -1,178 +1,163 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
-import { AlertController, App, FabContainer, ItemSliding, List, ModalController, NavController, ToastController, LoadingController, Refresher } from 'ionic-angular';
+import {
+    AlertController,
+    App,
+    List,
+    NavController,
+    ToastController,
+    LoadingController,
+    Refresher, Events
+} from 'ionic-angular';
 
 /*
   To learn how to use third party libs in an
   Ionic app check out our docs here: http://ionicframework.com/docs/v2/resources/third-party-libs/
 */
-// import moment from 'moment';
+import * as moment from 'moment';
 
-import { ConferenceData } from '../../providers/conference-data';
-import { UserData } from '../../providers/user-data';
+import {ConferenceData} from '../../providers/conference-data';
+import {UserData} from '../../providers/user-data';
 
-import { SessionDetailPage } from '../session-detail/session-detail';
-import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
+import {SessionDetailPage} from '../session-detail/session-detail';
 import {Storage} from "@ionic/storage";
+import {Config} from "../../app/config";
+import {TripService} from "../../providers/trip.service";
 
 
 @Component({
-  selector: 'page-schedule',
-  templateUrl: 'schedule.html'
+    selector: 'page-schedule',
+    templateUrl: 'schedule.html'
 })
 export class SchedulePage {
-  // the list is a child of the schedule page
-  // @ViewChild('scheduleList') gets a reference to the list
-  // with the variable #scheduleList, `read: List` tells it to return
-  // the List and not a reference to the element
-  @ViewChild('scheduleList', { read: List }) scheduleList: List;
+    private readonly TAG = SchedulePage.name;
+    // the list is a child of the schedule page
+    // @ViewChild('scheduleList') gets a reference to the list
+    // with the variable #scheduleList, `read: List` tells it to return
+    // the List and not a reference to the element
+    @ViewChild('scheduleList', {read: List}) scheduleList: List;
 
-  dayIndex = 0;
-  queryText = '';
-  segment = 'all';
-  excludeTracks: any = [];
-  shownSessions: any = [];
-  groups: any = [];
-  confDate: string;
+    dayIndex = 0;
+    queryText = '';
+    segment = 'all';
+    excludeTracks: any = [];
+    shownSessions: any = [];
+    groups: any = [];
+    confDate: string;
 
-  constructor(
-    public alertCtrl: AlertController,
-    public app: App,
-    public loadingCtrl: LoadingController,
-    public modalCtrl: ModalController,
-    public navCtrl: NavController,
-    public toastCtrl: ToastController,
-    public confData: ConferenceData,
-    public user: UserData,
-    public storage: Storage
-  ) {
-      this.storage.set("token", "ed22b859c305a5577c532fd73fa5578fff084dc9");
-  }
+    title = "Solicitudes";
+    mainToggle = true;
+    trips: any[] = [];
 
-  ionViewDidLoad() {
-    this.app.setTitle('Viajes');
-    this.loadTrips();
-    // this.updateSchedule();
-  }
-
-  private loadTrips(){
-
-  }
-
-  updateSchedule() {
-    // Close any open sliding items when the schedule updates
-    this.scheduleList && this.scheduleList.closeSlidingItems();
-
-    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
-      this.shownSessions = data.shownSessions;
-      this.groups = data.groups;
-    });
-  }
-
-  presentFilter() {
-    let modal = this.modalCtrl.create(ScheduleFilterPage, this.excludeTracks);
-    modal.present();
-
-    modal.onWillDismiss((data: any[]) => {
-      if (data) {
-        this.excludeTracks = data;
-        this.updateSchedule();
-      }
-    });
-
-  }
-
-  goToSessionDetail() {
-    // go to the session detail page
-    // and pass in the session data
-
-    this.navCtrl.push(SessionDetailPage);
-  }
-
-  addFavorite(slidingItem: ItemSliding, sessionData: any) {
-
-    if (this.user.hasFavorite(sessionData.name)) {
-      // woops, they already favorited it! What shall we do!?
-      // prompt them to remove it
-      this.removeFavorite(slidingItem, sessionData, 'Favorite already added');
-    } else {
-      // remember this session as a user favorite
-      this.user.addFavorite(sessionData.name);
-
-      // create an alert instance
-      let alert = this.alertCtrl.create({
-        title: 'Favorite Added',
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            // close the sliding item
-            slidingItem.close();
-          }
-        }]
-      });
-      // now present the alert on top of all other content
-      alert.present();
+    constructor(public alertCtrl: AlertController,
+                public app: App,
+                public loadingCtrl: LoadingController,
+                public navCtrl: NavController,
+                public toastCtrl: ToastController,
+                public confData: ConferenceData,
+                public user: UserData,
+                public storage: Storage,
+                private tripService: TripService,
+                private events: Events) {
+        this.storage.set("token", "ed22b859c305a5577c532fd73fa5578fff084dc9");
+        Config.token = "ed22b859c305a5577c532fd73fa5578fff084dc9";
+        this.events.subscribe("trip:created", () => {
+            if (this.mainToggle) {
+                this.loadDemandsTrips();
+            } else {
+                this.loadOffersTrips();
+            }
+        });
     }
 
-  }
+    ionViewDidLoad() {
+        this.app.setTitle('Viajes');
+        this.loadDemandsTrips();
+    }
 
-  removeFavorite(slidingItem: ItemSliding, sessionData: any, title: string) {
-    let alert = this.alertCtrl.create({
-      title: title,
-      message: 'Would you like to remove this session from your favorites?',
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: () => {
-            // they clicked the cancel button, do not remove the session
-            // close the sliding item and hide the option buttons
-            slidingItem.close();
-          }
-        },
-        {
-          text: 'Remove',
-          handler: () => {
-            // they want to remove this session from their favorites
-            this.user.removeFavorite(sessionData.name);
-            this.updateSchedule();
-
-            // close the sliding item and hide the option buttons
-            slidingItem.close();
-          }
-        }
-      ]
-    });
-    // now present the alert on top of all other content
-    alert.present();
-  }
-
-  openSocial(network: string, fab: FabContainer) {
-    let loading = this.loadingCtrl.create({
-      content: `Posting to ${network}`,
-      duration: (Math.random() * 1000) + 500
-    });
-    loading.onWillDismiss(() => {
-      fab.close();
-    });
-    loading.present();
-  }
-
-  doRefresh(refresher: Refresher) {
-    this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
-      this.shownSessions = data.shownSessions;
-      this.groups = data.groups;
-
-      // simulate a network request that would take longer
-      // than just pulling from out local json file
-      setTimeout(() => {
-        refresher.complete();
-
-        const toast = this.toastCtrl.create({
-          message: 'Sessions have been updated.',
-          duration: 3000
+    private loadDemandsTrips() {
+        const loading = this.loadingCtrl.create({
+            content: 'Listando...'
         });
-        toast.present();
-      }, 1000);
-    });
-  }
+        loading.present();
+
+        this.tripService.listDemands().subscribe(res => {
+            console.log(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(res));
+            loading.dismiss();
+            let tmp = [];
+            for (let t of res) {
+                let obj = t;
+                obj.departure_date = moment(obj.departure_date).format('YYYY MM DD');
+                tmp.push(obj);
+            }
+            this.trips = tmp;
+        }, error => {
+            console.error(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(error));
+            this.alertCtrl.create({
+                title: 'Error al intentar crear',
+                subTitle: String(error),
+                buttons: ['OK']
+            }).present();
+
+        });
+
+    }
+
+    private loadOffersTrips() {
+        const loading = this.loadingCtrl.create({
+            content: 'Listando...'
+        });
+        loading.present();
+
+        this.tripService.listOffers().subscribe(res => {
+            console.log(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(res));
+            this.trips = res;
+            loading.dismiss();
+        }, error => {
+            console.error(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(error));
+            this.alertCtrl.create({
+                title: 'Error al intentar crear',
+                subTitle: String(error),
+                buttons: ['OK']
+            }).present();
+        });
+
+    }
+
+    mainToggleChanged() {
+        console.log(`${this.TAG}:mainToggleChanged:`, this.mainToggle);
+        if (this.mainToggle) {
+            this.title = "Ofertas";
+            this.loadDemandsTrips();
+        } else {
+            this.title = "Solicitudes";
+            this.loadOffersTrips();
+        }
+        this.mainToggle = !this.mainToggle
+    }
+
+    detail(trip: any) {
+        this.storage.set("trip", trip);
+        this.navCtrl.push(SessionDetailPage);
+    }
+
+
+    doRefresh(refresher: Refresher) {
+        this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+            this.shownSessions = data.shownSessions;
+            this.groups = data.groups;
+
+            // simulate a network request that would take longer
+            // than just pulling from out local json file
+            setTimeout(() => {
+                refresher.complete();
+
+                const toast = this.toastCtrl.create({
+                    message: 'Sessions have been updated.',
+                    duration: 3000
+                });
+                toast.present();
+            }, 1000);
+        });
+    }
 }

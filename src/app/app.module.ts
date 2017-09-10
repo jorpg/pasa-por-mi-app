@@ -30,7 +30,7 @@ import {SupportPage} from '../pages/support/support';
 import {ConferenceData} from '../providers/conference-data';
 import {UserData} from '../providers/user-data';
 import {ProfilePage} from "../pages/profile/profile";
-import {MisViajesPage} from "../pages/mis-viajes/mis-viajes";
+import {CreatedTripsPage} from "../pages/created-trips/mis-viajes";
 import {LoginService} from "../providers/login.service";
 import {TripService} from "../providers/trip.service";
 import {VehiclesService} from "../providers/car.service";
@@ -40,7 +40,7 @@ import {VehiclesService} from "../providers/car.service";
     declarations: [
         ConferenceApp,
         AboutPage,
-        MisViajesPage,
+        CreatedTripsPage,
         ProfilePage,
         AccountPage,
         LoginPage,
@@ -69,7 +69,7 @@ import {VehiclesService} from "../providers/car.service";
                 {component: SpeakerDetailPage, name: 'SpeakerDetail', segment: 'speakerDetail/:speakerId'},
                 {component: MapPage, name: 'Map', segment: 'map'},
                 {component: AboutPage, name: 'About', segment: 'about'},
-                {component: MisViajesPage, name: 'MisViajes', segment: 'mis-viajes'},
+                {component: CreatedTripsPage, name: 'MisViajes', segment: 'mis-viajes'},
                 {component: ProfilePage, name: 'Perfil', segment: 'profile'},
                 {component: TutorialPage, name: 'Tutorial', segment: 'tutorial'},
                 {component: SupportPage, name: 'SupportPage', segment: 'support'},
@@ -84,7 +84,7 @@ import {VehiclesService} from "../providers/car.service";
     entryComponents: [
         ConferenceApp,
         AboutPage,
-        MisViajesPage,
+        CreatedTripsPage,
         ProfilePage,
         AccountPage,
         LoginPage,

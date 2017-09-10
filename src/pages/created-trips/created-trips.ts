@@ -16,10 +16,10 @@ import { ScheduleFilterPage } from '../schedule-filter/schedule-filter';
 
 
 @Component({
-  selector: 'page-mis-viajes',
-  templateUrl: 'mis-viajes.html'
+  selector: 'page-created-trips',
+  templateUrl: 'created-trips.html'
 })
-export class MisViajesPage {
+export class CreatedTripsPage {
   // the list is a child of the schedule page
   // @ViewChild('scheduleList') gets a reference to the list
   // with the variable #scheduleList, `read: List` tells it to return

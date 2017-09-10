@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {VehiclesService} from "../../providers/car.service";
-import {AlertController, LoadingController} from "ionic-angular";
+import {AlertController, Events, LoadingController} from "ionic-angular";
 import {Storage} from "@ionic/storage";
 import {Config} from "../../app/config";
 import {TripService} from "../../providers/trip.service";
+import {NavController} from 'ionic-angular';
 
 // import { LoginService } from '../../providers/conference-data';
 //
@@ -38,7 +39,9 @@ export class MapPage {
                        private alertCtrl: AlertController,
                        public storage: Storage,
                        public tripService: TripService,
-                       public loadingCtrl: LoadingController) {
+                       public loadingCtrl: LoadingController,
+                       private navCtrl: NavController,
+                       private events: Events) {
         this.storage.set("token", "ed22b859c305a5577c532fd73fa5578fff084dc9");
         Config.token = "ed22b859c305a5577c532fd73fa5578fff084dc9";
     }
@@ -99,7 +102,10 @@ export class MapPage {
                 this.alertCtrl.create({
                     title: this.mainToggle ? "Solicitud creada" : "Oferta creada",
                     buttons: ['OK']
-                }).present();
+                }).present().then(() => {
+                    this.events.publish("trip:created");
+                    this.navCtrl.pop();
+                });
 
             }, error => {
                 console.error(`${this.TAG}:create:`, JSON.stringify(error));
@@ -117,7 +123,10 @@ export class MapPage {
                 this.alertCtrl.create({
                     title: this.mainToggle ? "Solicitud creada" : "Oferta creada",
                     buttons: ['OK']
-                }).present();
+                }).present().then(() => {
+                    this.events.publish("trip:created");
+                    this.navCtrl.pop();
+                });
 
             }, error => {
                 console.error(`${this.TAG}:create:`, JSON.stringify(error));

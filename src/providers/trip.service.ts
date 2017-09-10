@@ -16,7 +16,19 @@ export class TripService extends BaseService {
         super();
     }
 
-    list() {
+    listDemands() {
+        const token = Config.token;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append('Authorization', `Token ${token}`);
+
+        return this.http
+            .get(`${Config.API_URL}demands/`, {headers})
+            .catch((e) => this.handleErrors(e))
+            .map(res => this.extractData(res));
+    }
+
+    listOffers() {
         const token = Config.token;
         const headers = new Headers();
         headers.append("Content-Type", "application/json");
@@ -35,7 +47,7 @@ export class TripService extends BaseService {
         headers.append('Authorization', `Token ${token}`);
 
         return this.http
-            .post(`${Config.API_URL}offers/`, data, {headers})
+            .post(`${Config.API_URL}my-offers/`, data, {headers})
             .catch((e) => this.handleErrors(e))
             .map(res => this.extractData(res));
     }
@@ -47,7 +59,7 @@ export class TripService extends BaseService {
         headers.append('Authorization', `Token ${token}`);
 
         return this.http
-            .post(`${Config.API_URL}demands/`, data, {headers})
+            .post(`${Config.API_URL}my-demands/`, data, {headers})
             .catch((e) => this.handleErrors(e))
             .map(res => this.extractData(res));
     }
