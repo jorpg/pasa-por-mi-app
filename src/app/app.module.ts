@@ -33,6 +33,7 @@ import {ProfilePage} from "../pages/profile/profile";
 import {MisViajesPage} from "../pages/mis-viajes/mis-viajes";
 import {LoginService} from "../providers/login.service";
 import {TripService} from "../providers/trip.service";
+import {VehiclesService} from "../providers/car.service";
 
 
 @NgModule({
@@ -104,6 +105,7 @@ import {TripService} from "../providers/trip.service";
         ConferenceData,
         LoginService,
         TripService,
+        VehiclesService,
         UserData,
         InAppBrowser,
         SplashScreen,

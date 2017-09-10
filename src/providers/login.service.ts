@@ -5,7 +5,6 @@ import {Headers, Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/of';
 import {BaseService} from "./base.service";
-import {Storage} from "@ionic/storage";
 import {Config} from "../app/config";
 
 
@@ -13,7 +12,7 @@ import {Config} from "../app/config";
 export class LoginService extends BaseService {
     data: any;
 
-    constructor(public http: Http, private storage: Storage) {
+    constructor(public http: Http) {
         super();
     }
 

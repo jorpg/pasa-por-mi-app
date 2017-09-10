@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
 import {Facebook, FacebookLoginResponse} from "@ionic-native/facebook";
 import {LoginService} from "../../providers/login.service";
 import {AlertController, LoadingController} from "ionic-angular";
 import {Storage} from "@ionic/storage";
+import {Component} from '@angular/core';
+import {NavController} from 'ionic-angular';
 
 
 @Component({
@@ -11,12 +12,15 @@ import {Storage} from "@ionic/storage";
 })
 export class ProfilePage {
     protected readonly TAG = ProfilePage.name;
+    conferenceDate = '2047-05-17';
+    username: string;
 
     constructor(private fb: Facebook,
                 private loginService: LoginService,
                 private alertCtrl: AlertController,
                 private storage: Storage,
-                public loadingCtrl: LoadingController) {
+                public loadingCtrl: LoadingController,
+                private nav: NavController) {
     }
 
     ngOnInit() {
@@ -55,4 +59,57 @@ export class ProfilePage {
                 console.error(`${this.TAG}:loginWithFacebook:login:`, JSON.stringify(e));
             });
     }
+
+    ngAfterViewInit() {
+        this.getUsername();
+    }
+
+    updatePicture() {
+        console.log('Clicked to update picture');
+    }
+
+    // Present an alert with the current username populated
+    // clicking OK will update the username and display it
+    // clicking Cancel will close the alert and do nothing
+    changeUsername() {
+        let alert = this.alertCtrl.create({
+            title: 'Change Username',
+            buttons: [
+                'Cancel'
+            ]
+        });
+        alert.addInput({
+            name: 'username',
+            value: this.username,
+            placeholder: 'username'
+        });
+        alert.addButton({
+            text: 'Ok',
+            handler: () => {
+                this.getUsername();
+            }
+        });
+
+        alert.present();
+    }
+
+    getUsername() {
+    }
+
+    changePassword() {
+        console.log('Clicked to change password');
+    }
+
+    logout() {
+        this.nav.setRoot('LoginPage');
+    }
+
+    support() {
+        this.nav.push('SupportPage');
+    }
+
+
+    presentPopover() {
+    }
+
 }

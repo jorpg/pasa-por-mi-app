@@ -10,7 +10,7 @@ import {Config} from "../app/config";
 
 
 @Injectable()
-export class CarService extends BaseService {
+export class VehiclesService extends BaseService {
     data: any;
 
     constructor(public http: Http, private storage: Storage) {
@@ -24,7 +24,7 @@ export class CarService extends BaseService {
         headers.append('Authorization', `Token ${token}`);
 
         return this.http
-            .get(`${Config.API_URL}/cars/`, {headers})
+            .get(`${Config.API_URL}/my-vehicles/`, {headers})
             .catch((e) => this.handleErrors(e))
             .map(res => this.extractData(res));
     }

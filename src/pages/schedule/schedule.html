@@ -1,74 +1,101 @@
 <ion-header>
-    <ion-navbar no-border-bottom>
-        <ion-title>
-            Rutas
-        </ion-title>
+  <ion-navbar no-border-bottom>
+    <ion-title>
+      Rutas
+    </ion-title>
 
-        <ion-buttons end>
-            <button ion-button icon-only>
-                <ion-toggle color="secondary"></ion-toggle>
-            </button>
-        </ion-buttons>
-    </ion-navbar>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-toggle color="secondary"></ion-toggle>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <ion-refresher (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-label text-center text-uppercase color="primary" class="title-rutas">
+    Ofertas
+  </ion-label>
+  <ion-list #scheduleList [hidden]="shownSessions === 0">
 
-    <ion-list #scheduleList [hidden]="shownSessions === 0">
+    <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
 
-        <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
+      <ion-item-divider sticky>
+        <ion-label>
+          {{group.time}}
+        </ion-label>
+      </ion-item-divider>
 
-            <ion-item-divider sticky>
-                <ion-label>
-                    {{group.time}}
-                </ion-label>
-            </ion-item-divider>
+      <!-- <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase" [hidden]="session.hide">
 
-            <ion-card (click)="goToSessionDetail()">
-                <ion-card-content>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col col-6>
-                                <ion-card-title>
-                                    Origen:
-                                </ion-card-title>
-                                <p>
-                                    The most popular industrial group ever, and largely
-                                    responsible for bringing the music to a mass audience.
-                                </p>
-                            </ion-col>
-                            <ion-col col-6>
-                                <ion-card-title>
-                                    Destino:
-                                </ion-card-title>
-                                <p>
-                                    The most popular industrial group ever, and largely
-                                    responsible for bringing the music to a mass audience.
-                                </p>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                    <ion-grid>
-                        <ion-row>
-                            <ion-col col-6><p>Carro: Mitsubishi Eplipse</p></ion-col>
-                            <ion-col col-6><p>Puestos: 3</p></ion-col>
-                        </ion-row>
-                    </ion-grid>
-                    <ion-grid>
-                        <h1 text-center>3000 Bs.</h1>
-                        <ion-row>
-                            <ion-col col-12>
-                                <button ion-button block>Tomar</button>
-                            </ion-col>
-                        </ion-row>
-                    </ion-grid>
-                </ion-card-content>
-            </ion-card>
-        </ion-item-group>
+        <button ion-item (click)="goToSessionDetail(session)">
+          <ion-card>
+          <img src="img/nin-live.png"/>
+          <ion-card-content>
+            <ion-card-title>
+              Nine Inch Nails Live
+              </ion-card-title>
+            <p>
+              The most popular industrial group ever, and largely
+              responsible for bringing the music to a mass audience.
+            </p>
+          </ion-card-content>
+        </ion-card>
+        </button>
 
-    </ion-list>
+        <ion-item-options>
+          <button ion-button color="favorite" (click)="addFavorite(slidingItem, session)" *ngIf="segment === 'all'">
+            Favorite
+          </button>
+          <button ion-button color="danger" (click)="removeFavorite(slidingItem, session, 'Remove Favorite')" *ngIf="segment === 'favorites'">
+            Remove
+          </button>
+        </ion-item-options>
+
+      </ion-item-sliding> -->
+      <ion-card (click)="goToSessionDetail()">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col col-6>
+              <ion-card-title>
+                Origen:
+              </ion-card-title>
+              <p>
+                The most popular industrial group ever, and largely
+                responsible for bringing the music to a mass audience.
+              </p>
+            </ion-col>
+            <ion-col col-6>
+            <ion-card-title>
+              Destino:
+            </ion-card-title>
+            <p>
+              The most popular industrial group ever, and largely
+              responsible for bringing the music to a mass audience.
+            </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid>
+        <ion-row>
+          <ion-col col-6><p>Carro: Mitsubishi Eplipse</p></ion-col>
+          <ion-col col-6><p>Puestos: 3</p></ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <h1 text-center>3000 Bs.</h1>
+      <ion-row>
+        <ion-col col-12><button ion-button block>Detalles</button></ion-col>
+      </ion-row>
+    </ion-grid>
+      </ion-card-content>
+      </ion-card>
+    </ion-item-group>
+
+  </ion-list>
 
 </ion-content>
