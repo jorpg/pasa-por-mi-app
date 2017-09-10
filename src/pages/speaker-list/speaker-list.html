@@ -12,10 +12,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="outer-content speaker-list">
-  <ion-list>
-    <ion-grid fixed>
-      <ion-row align-items-stretch>
+<ion-content class="outer-content">
+  <ion-label text-center text-uppercase color="primary" class="title-rutas">
+    Ofertas Pendientes
+  </ion-label>
+  <ion-list *ngFor="let pendiente of [1,2,3,4,5]">
+    <!-- <ion-grid fixed> -->
+      <!-- <ion-row align-items-stretch>
 
         <ion-col col-12 col-md-6 align-self-stretch align-self-center *virtualItem="let speaker" approxItemHeight="457px">
 
@@ -31,7 +34,7 @@
 
             <ion-card-content class="outer-content">
               <ion-list>
-                <button ion-item *ngFor="let session of speaker.sessions" (click)="goToSessionDetail(session)">
+                <button ion-item *ngFor="let session of speaker.sessions" (click)="goToSessionDetail()">
                   <h3>{{session.name}}</h3>
                 </button>
 
@@ -66,6 +69,44 @@
 
         </ion-col>
       </ion-row>
+    </ion-grid> -->
+    <ion-card (click)="goToSessionDetail()">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+            <ion-card-title>
+              Origen:
+            </ion-card-title>
+            <p>
+              The most popular industrial group ever, and largely
+              responsible for bringing the music to a mass audience.
+            </p>
+          </ion-col>
+          <ion-col col-6>
+          <ion-card-title>
+            Destino:
+          </ion-card-title>
+          <p>
+            The most popular industrial group ever, and largely
+            responsible for bringing the music to a mass audience.
+          </p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+      <ion-row>
+        <ion-col col-6><p>Carro: Mitsubishi Eplipse</p></ion-col>
+        <ion-col col-6><p>Puestos: 3</p></ion-col>
+      </ion-row>
     </ion-grid>
+    <ion-grid>
+      <h1 text-center>3000 Bs.</h1>
+    <ion-row>
+      <ion-col col-12><button ion-button block>Detalles</button></ion-col>
+    </ion-row>
+  </ion-grid>
+    </ion-card-content>
+    </ion-card>
   </ion-list>
 </ion-content>
