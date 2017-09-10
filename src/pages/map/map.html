@@ -4,25 +4,52 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Crear Ruta</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-toggle color="secondary"></ion-toggle>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content class="map-page">
+  <ion-label text-center text-uppercase color="primary" class="title-rutas">
+    Información de la Ruta
+  </ion-label>
   <ion-list>
-
     <ion-item>
-      <ion-label floating>Origen:</ion-label>
+      <ion-label>Vehiculo</ion-label>
+      <ion-select [(ngModel)]="Vehiculo">
+        <ion-option value="f">Mitsubishi Eclipse</ion-option>
+        <ion-option value="m">Chevrolet Aveo 2011</ion-option>
+        <ion-option value="m">Toyota Corolla 2017</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label >Origen:</ion-label>
       <ion-input type="text"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>Destino:</ion-label>
+      <ion-label >Destino:</ion-label>
       <ion-input type="text"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label floating>Marca</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-label>Fecha y hora</ion-label>
+      <ion-datetime displayFormat="MMM DD, YYYY hh:mm A" [(ngModel)]="myDate"></ion-datetime>
     </ion-item>
-
-
+    <ion-item>
+    <ion-label >Puestos Disponibles</ion-label>
+    <ion-input type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+    <ion-label >Precio</ion-label>
+    <ion-input type="number"></ion-input>
+    </ion-item>
   </ion-list>
+
 </ion-content>
+<ion-footer>
+  <ion-toolbar text-center>
+    <button ion-button color="light" clear>Crear Ruta</button>
+  </ion-toolbar>
+</ion-footer>

@@ -16,7 +16,9 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-
+  <ion-label text-center text-uppercase color="primary" class="title-rutas">
+    Ofertas
+  </ion-label>
   <ion-list #scheduleList [hidden]="shownSessions === 0">
 
     <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
@@ -87,7 +89,7 @@
       <ion-grid>
         <h1 text-center>3000 Bs.</h1>
       <ion-row>
-        <ion-col col-12><button ion-button block>Tomar</button></ion-col>
+        <ion-col col-12><button ion-button block>Detalles</button></ion-col>
       </ion-row>
     </ion-grid>
       </ion-card-content>

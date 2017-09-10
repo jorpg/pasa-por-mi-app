@@ -44,7 +44,7 @@ export class MisViajesPage {
     public confData: ConferenceData,
     public user: UserData,
   ) {
-      alert("MIS VIAJES");
+      
   }
 
   ionViewDidLoad() {

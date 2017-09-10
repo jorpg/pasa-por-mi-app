@@ -44,7 +44,7 @@ export class SchedulePage {
     public confData: ConferenceData,
     public user: UserData,
   ) {
-      alert("TEST");
+      
   }
 
   ionViewDidLoad() {
