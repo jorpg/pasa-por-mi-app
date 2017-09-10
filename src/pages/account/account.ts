@@ -13,7 +13,7 @@ export class AccountPage {
   username: string;
 
   constructor(public alertCtrl: AlertController, public nav: NavController, public userData: UserData) {
-    alert("TEST");
+    // alert("TEST");
   }
 
   ngAfterViewInit() {

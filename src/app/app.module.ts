@@ -6,6 +6,7 @@ import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
 
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import {Facebook} from '@ionic-native/facebook';
 
 import {IonicStorageModule} from '@ionic/storage';
 
@@ -30,6 +31,7 @@ import {ConferenceData} from '../providers/conference-data';
 import {UserData} from '../providers/user-data';
 import {ProfilePage} from "../pages/profile/profile";
 import {MisViajesPage} from "../pages/mis-viajes/mis-viajes";
+import {LoginService} from "../providers/login.service";
 
 
 @NgModule({
@@ -99,9 +101,11 @@ import {MisViajesPage} from "../pages/mis-viajes/mis-viajes";
     providers: [
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         ConferenceData,
+        LoginService,
         UserData,
         InAppBrowser,
-        SplashScreen
+        SplashScreen,
+        Facebook,
     ]
 })
 export class AppModule {
