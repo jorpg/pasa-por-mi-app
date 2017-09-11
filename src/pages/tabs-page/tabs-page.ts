@@ -14,7 +14,7 @@ import {CreatedTripsPage} from "../created-trips/created-trips";
 export class TabsPage {
     // set the root pages for each tab
     tab1Root: any = SchedulePage;
-    tab2Root: any = SpeakerListPage;
+    tab2Root: any = SpeakerListPage; // Pending
     tab3Root: any = MapPage;
     tab4Root: any = CreatedTripsPage;
     tab5Root: any = ProfilePage;

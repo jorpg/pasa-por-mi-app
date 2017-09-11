@@ -1,112 +1,70 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Viajes Pendientes</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only>
-        <ion-toggle color="secondary"></ion-toggle>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+    <ion-navbar (click)="mainToggleChanged()">
+        <ion-title>{{title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only>
+                <ion-toggle [(ngModel)]="demandsMode" color="secondary"></ion-toggle>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 
 <ion-content class="outer-content">
-  <ion-label text-center text-uppercase color="primary" class="title-rutas">
-    Ofertas Pendientes
-  </ion-label>
-  <ion-list *ngFor="let pendiente of [1,2,3,4,5]">
-    <!-- <ion-grid fixed> -->
-      <!-- <ion-row align-items-stretch>
+    <ion-refresher (ionRefresh)="doRefresh()">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
 
-        <ion-col col-12 col-md-6 align-self-stretch align-self-center *virtualItem="let speaker" approxItemHeight="457px">
+    <ion-list #scheduleList [hidden]="shownSessions === 0">
 
-          <ion-card class="speaker-card">
-            <ion-card-header>
-              <button ion-item detail-none (click)="goToSpeakerDetail(speaker)">
-                <ion-avatar item-start>
-                  <img [src]="speaker.profilePic" alt="Speaker profile pic">
-                </ion-avatar>
-                {{speaker.name}}
-              </button>
-            </ion-card-header>
+        <ion-item-group *ngFor="let trip of trips">
 
-            <ion-card-content class="outer-content">
-              <ion-list>
-                <button ion-item *ngFor="let session of speaker.sessions" (click)="goToSessionDetail()">
-                  <h3>{{session.name}}</h3>
-                </button>
+            <ion-item-divider sticky>
+                <ion-label>
+                    {{trip.departure_date}}
+                </ion-label>
+            </ion-item-divider>
 
-                <button ion-item (click)="goToSpeakerDetail(speaker)">
-                  <h3>About {{speaker.name}}</h3>
-                </button>
-              </ion-list>
-            </ion-card-content>
+            <ion-card (click)="detail(trip)">
+                <ion-card-content>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-6>
+                                <ion-card-title>
+                                    Origen:
+                                </ion-card-title>
+                                <p>
+                                    {{trip.departure_address.text}}
+                                </p>
+                            </ion-col>
+                            <ion-col col-6>
+                                <ion-card-title>
+                                    Destino:
+                                </ion-card-title>
+                                <p>
+                                    {{trip.arrival_address.text}}
+                                </p>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <ion-grid>
+                        <ion-row>
+                            <ion-col col-6 *ngIf="trip.vehicle"><p>Vehiculo: {{trip.vehicle.brand}}</p></ion-col>
+                            <ion-col col-6><p>Puestos: {{trip.seats}}</p></ion-col>
+                        </ion-row>
+                    </ion-grid>
+                    <ion-grid>
+                        <h1 text-center *ngIf="trip.price">Bs. {{trip.price}}</h1>
 
-            <ion-row no-padding>
-              <ion-col col-12 col-lg-auto text-center text-lg-left>
-                <button ion-button clear small color="primary" icon-start (click)="goToSpeakerTwitter(speaker)">
-                  <ion-icon name="logo-twitter"></ion-icon>
-                  Tweet
-                </button>
-              </ion-col>
-              <ion-col col-12 col-lg-auto text-center>
-                <button ion-button clear small color="primary" icon-start (click)="openSpeakerShare(speaker)">
-                  <ion-icon name='share-alt'></ion-icon>
-                  Share
-                </button>
-              </ion-col>
-              <ion-col col-12 col-lg-auto text-center text-lg-right>
-                <button ion-button clear small color="primary" icon-start (click)="openContact(speaker)">
-                  <ion-icon name='chatboxes'></ion-icon>
-                  Contact
-                </button>
-              </ion-col>
-            </ion-row>
+                        <ion-row>
+                            <ion-col col-12>
+                                <button ion-button block>Detalles</button>
+                            </ion-col>
+                        </ion-row>
+                    </ion-grid>
+                </ion-card-content>
+            </ion-card>
+        </ion-item-group>
 
-          </ion-card>
+    </ion-list>
 
-        </ion-col>
-      </ion-row>
-    </ion-grid> -->
-    <ion-card (click)="goToSessionDetail()">
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col col-6>
-            <ion-card-title>
-              Origen:
-            </ion-card-title>
-            <p>
-              The most popular industrial group ever, and largely
-              responsible for bringing the music to a mass audience.
-            </p>
-          </ion-col>
-          <ion-col col-6>
-          <ion-card-title>
-            Destino:
-          </ion-card-title>
-          <p>
-            The most popular industrial group ever, and largely
-            responsible for bringing the music to a mass audience.
-          </p>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-grid>
-      <ion-row>
-        <ion-col col-6><p>Carro: Mitsubishi Eplipse</p></ion-col>
-        <ion-col col-6><p>Puestos: 3</p></ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-grid>
-      <h1 text-center>3000 Bs.</h1>
-    <ion-row>
-      <ion-col col-12><button ion-button block>Detalles</button></ion-col>
-    </ion-row>
-  </ion-grid>
-    </ion-card-content>
-    </ion-card>
-  </ion-list>
 </ion-content>

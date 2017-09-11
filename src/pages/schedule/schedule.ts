@@ -5,9 +5,8 @@ import {
     App,
     List,
     NavController,
-    ToastController,
     LoadingController,
-    Refresher, Events
+    Events
 } from 'ionic-angular';
 
 /*
@@ -15,9 +14,6 @@ import {
   Ionic app check out our docs here: http://ionicframework.com/docs/v2/resources/third-party-libs/
 */
 import * as moment from 'moment';
-
-import {ConferenceData} from '../../providers/conference-data';
-import {UserData} from '../../providers/user-data';
 
 import {SessionDetailPage} from '../session-detail/session-detail';
 import {Storage} from "@ionic/storage";
@@ -46,33 +42,34 @@ export class SchedulePage {
     confDate: string;
 
     title = "Solicitudes";
-    mainToggle = true;
+    demandsMode = true;
     trips: any[] = [];
 
-    constructor(public alertCtrl: AlertController,
-                public app: App,
-                public loadingCtrl: LoadingController,
-                public navCtrl: NavController,
-                public toastCtrl: ToastController,
-                public confData: ConferenceData,
-                public user: UserData,
-                public storage: Storage,
+    constructor(private alertCtrl: AlertController,
+                private app: App,
+                private loadingCtrl: LoadingController,
+                private navCtrl: NavController,
+                private storage: Storage,
                 private tripService: TripService,
                 private events: Events) {
         this.storage.set("token", "ed22b859c305a5577c532fd73fa5578fff084dc9");
         Config.token = "ed22b859c305a5577c532fd73fa5578fff084dc9";
         this.events.subscribe("trip:created", () => {
-            if (this.mainToggle) {
-                this.loadDemandsTrips();
-            } else {
-                this.loadOffersTrips();
-            }
+            this.load();
         });
     }
 
     ionViewDidLoad() {
         this.app.setTitle('Viajes');
-        this.loadDemandsTrips();
+        this.load();
+    }
+
+    private load() {
+        if (this.demandsMode) {
+            this.loadDemandsTrips();
+        } else {
+            this.loadOffersTrips();
+        }
     }
 
     private loadDemandsTrips() {
@@ -94,7 +91,7 @@ export class SchedulePage {
         }, error => {
             console.error(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(error));
             this.alertCtrl.create({
-                title: 'Error al intentar crear',
+                title: 'Error al listar la información',
                 subTitle: String(error),
                 buttons: ['OK']
             }).present();
@@ -111,12 +108,18 @@ export class SchedulePage {
 
         this.tripService.listOffers().subscribe(res => {
             console.log(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(res));
-            this.trips = res;
             loading.dismiss();
+            let tmp = [];
+            for (let t of res) {
+                let obj = t;
+                obj.departure_date = moment(obj.departure_date).format('YYYY MM DD');
+                tmp.push(obj);
+            }
+            this.trips = tmp;
         }, error => {
             console.error(`${this.TAG}:loadTrips:tripService:`, JSON.stringify(error));
             this.alertCtrl.create({
-                title: 'Error al intentar crear',
+                title: 'Error al listar la información',
                 subTitle: String(error),
                 buttons: ['OK']
             }).present();
@@ -125,15 +128,14 @@ export class SchedulePage {
     }
 
     mainToggleChanged() {
-        console.log(`${this.TAG}:mainToggleChanged:`, this.mainToggle);
-        if (this.mainToggle) {
+        console.log(`${this.TAG}:mainToggleChanged:`, this.demandsMode);
+        if (this.demandsMode) {
             this.title = "Ofertas";
-            this.loadDemandsTrips();
         } else {
             this.title = "Solicitudes";
-            this.loadOffersTrips();
         }
-        this.mainToggle = !this.mainToggle
+        this.demandsMode = !this.demandsMode
+        this.load();
     }
 
     detail(trip: any) {
@@ -141,23 +143,7 @@ export class SchedulePage {
         this.navCtrl.push(SessionDetailPage);
     }
 
-
-    doRefresh(refresher: Refresher) {
-        this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
-            this.shownSessions = data.shownSessions;
-            this.groups = data.groups;
-
-            // simulate a network request that would take longer
-            // than just pulling from out local json file
-            setTimeout(() => {
-                refresher.complete();
-
-                const toast = this.toastCtrl.create({
-                    message: 'Sessions have been updated.',
-                    duration: 3000
-                });
-                toast.present();
-            }, 1000);
-        });
+    doRefresh() {
+        this.load();
     }
 }
